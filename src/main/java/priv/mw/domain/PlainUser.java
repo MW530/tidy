@@ -3,10 +3,9 @@ package priv.mw.domain;
 import lombok.Data;
 
 @Data
-public class User {
+public class PlainUser {
     private Integer id;
     private String name;
     private String email;
-    private String password;
     private boolean activated;
 }

@@ -4,4 +4,5 @@ import priv.mw.domain.User;
 
 public interface LoginMapper {
     public User getUserById(int id);
+    public User getUserByName(String name);
 }

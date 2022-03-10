@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import priv.mw.exception.ClientException;
 import priv.mw.exception.ServerException;
+import priv.mw.exception.TokenExpiredException;
+
+import java.util.HashMap;
 
 @Getter
 @Setter
@@ -63,7 +66,9 @@ public class Result {
             return Result.data("").msg(e.getMessage()).code(400);
         }else if(e instanceof ServerException){
             return Result.data("").msg(e.getMessage()).code(500);
-        }else {
+        }else if(e instanceof TokenExpiredException){
+            return Result.data("").msg("身份认证过期！").code(400);
+        }else{
             return Result.data("").msg("未知错误").code(500);
         }
     }

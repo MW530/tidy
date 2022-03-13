@@ -44,4 +44,9 @@ public class LoginController {
         System.out.println(user);
         return hashMap;
     }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
 }

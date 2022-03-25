@@ -47,4 +47,12 @@ public class JWTUtils {
             return null;
         }
     }
+
+    public static Integer parseTokenToId(String token){
+        if(checkToken(token)){
+            return JWT.decode(token).getClaim("id").asInt();
+        }else{
+            return null;
+        }
+    }
 }

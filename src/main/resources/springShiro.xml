@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<!--    <context:annotation-config />-->
+<!--    <context:component-scan base-package="priv.mw" />-->
+
+    <!-- proxy-target-class="true"强制使用CGLib代理，为false则spring会自动选择，否则事务不生效 -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+    <!-- 配置relam -->
+    <bean id="tidyRealm" class="priv.mw.shiro.TidyRealm"></bean>
+<!--    <bean id="authzPathFilter" class="com.hbst.basessm_1.shiro.ShiroAuthzPathFilter"></bean>-->
+
+    <!-- 配置权限管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms" ref="tidyRealm" />
+        <property name="cacheManager" ref="cacheManager" />
+    </bean>
+
+    <bean id="tidyFilter" class="priv.mw.filter.JWTFilter"/>
+
+    <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 调用我们配置的权限管理器 -->
+        <property name="securityManager" ref="securityManager" />
+        <property name="filters">
+            <map>
+                <entry key="tidyFilter" value-ref="tidyFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /login/**=anon
+                /register/**=anon
+                /**=tidyFilter
+            </value>
+        </property>
+    </bean>
+
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+
+    <!-- 配置shiro bean生命周期管理类 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+</beans>

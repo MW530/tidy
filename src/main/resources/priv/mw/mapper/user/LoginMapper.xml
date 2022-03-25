@@ -8,6 +8,6 @@
     </select>
 
     <select id="getUserByName" parameterType="string" resultType="user">
-        SELECT id, name, email, activated, showName, password, enabled, permissions from users WHERE name = #{name}
+        SELECT id, name, email, activated, showName, password, enabled, permissions, registerTime from users WHERE name = #{name}
     </select>
 </mapper>

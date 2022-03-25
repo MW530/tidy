@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import priv.mw.exception.AuthException;
 import priv.mw.exception.ClientException;
 import priv.mw.exception.ServerException;
 import priv.mw.exception.TokenExpiredException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 
 @Getter
@@ -62,12 +64,18 @@ public class Result {
     }
 
     public static Result getResult(Exception e){
-        if(e instanceof ClientException){
+        if(e instanceof AuthException){
+            return Result.data("").msg(e.getMessage()).code(401);
+        }
+        else if(e instanceof ClientException){
             return Result.data("").msg(e.getMessage()).code(400);
         }else if(e instanceof ServerException){
             return Result.data("").msg(e.getMessage()).code(500);
         }else if(e instanceof TokenExpiredException){
-            return Result.data("").msg("身份认证过期！").code(400);
+            return Result.data("").msg("身份认证过期！").code(401);
+        }else if(e instanceof ConstraintViolationException){
+            // 根据:分割类名方法名和具体消息，也就是说message中不能再包含:符号！
+            return Result.data("").msg(e.getMessage().split(":")[1].trim()).code(400);
         }else{
             return Result.data("").msg("未知错误").code(500);
         }

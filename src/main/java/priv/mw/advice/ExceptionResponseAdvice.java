@@ -12,7 +12,7 @@ import priv.mw.exception.ServerException;
 @RestControllerAdvice
 public class ExceptionResponseAdvice {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Throwable.class)
     @ResponseBody
     public Exception handleException(Exception exception){
         System.out.println(exception);

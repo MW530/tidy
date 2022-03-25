@@ -52,24 +52,6 @@
           <artifactId>spring-jdbc</artifactId>
           <version>5.3.16</version>
       </dependency>
-
-      <dependency>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-web</artifactId>
-          <version>5.6.2</version>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-config</artifactId>
-          <version>5.6.2</version>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-framework-bom</artifactId>
-          <version>5.3.16</version>
-          <type>pom</type>
-          <scope>import</scope>
-      </dependency>
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-aop</artifactId>
@@ -81,6 +63,26 @@
           <groupId>org.aspectj</groupId>
           <artifactId>aspectjweaver</artifactId>
           <version>1.8.4</version>
+      </dependency>
+
+<!--      shiro相关-->
+      <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-core</artifactId>
+          <version>1.8.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-web -->
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-web</artifactId>
+          <version>1.8.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-spring</artifactId>
+          <version>1.8.0</version>
       </dependency>
 
       <!-- jsp相关 -->
@@ -146,7 +148,11 @@
       <artifactId>log4j-core</artifactId>
       <version>2.17.2</version>
     </dependency>
-
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-nop</artifactId>
+          <version>1.7.2</version>
+      </dependency>
 <!--    测试相关-->
     <dependency>
       <groupId>junit</groupId>
@@ -184,6 +190,17 @@
           <groupId>com.auth0</groupId>
           <artifactId>java-jwt</artifactId>
           <version>3.18.3</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.hibernate.validator</groupId>
+          <artifactId>hibernate-validator</artifactId>
+          <version>6.0.4.Final</version>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish</groupId>
+          <artifactId>jakarta.el</artifactId>
+          <version>4.0.1</version>
       </dependency>
   </dependencies>
   <build>

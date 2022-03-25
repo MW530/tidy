@@ -9,16 +9,34 @@ http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context.xsd">
-
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+    <bean id="methodValidationPostProcessor" class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+        <property name="validator" ref="validator"/>
+    </bean>
     <context:component-scan base-package="priv.mw.controller"/>
     <context:component-scan base-package="priv.mw.advice"/>
-    <mvc:annotation-driven>
+
+    <mvc:annotation-driven  validator="validator">
+        <!--        对应方法中注入userid-->
+        <mvc:argument-resolvers>
+            <bean class="priv.mw.resolver.UserIdHandlerMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+<!--        输出数据放置乱码-->
         <mvc:message-converters>
+<!--            将MappingJackson2HttpMessageConverter移到前面,处理ResponseBodyAdvice的String异常的问题-->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="defaultCharset" value="UTF-8"/>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <bean class="priv.mw.interceptor.ErrorInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <mvc:default-servlet-handler/>
 </beans>

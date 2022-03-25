@@ -6,4 +6,8 @@
     <typeAliases>
         <package name="priv.mw.domain"/>
     </typeAliases>
+    
+    <typeHandlers>
+        <package name="priv.mw.utils.mybatisTypeHandlers"/>
+    </typeHandlers>
 </configuration>

@@ -25,13 +25,13 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         //处理返回值是String的状况
         //处理字符串类型数据
-        if(o instanceof String){
-          try {
-            return mapper.writeValueAsString(Result.data(o));
-           } catch (JsonProcessingException e) {
-              e.printStackTrace();
-          }
-        }
+//        if(o instanceof String){
+//          try {
+//            return mapper.writeValueAsString(Result.data(o));
+//           } catch (JsonProcessingException e) {
+//              e.printStackTrace();
+//          }
+//        }
 
         // 处理错误
         if(o instanceof  Exception){

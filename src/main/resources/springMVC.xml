@@ -9,17 +9,29 @@ http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:tidy.properties"/>
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
     <bean id="methodValidationPostProcessor" class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
         <property name="validator" ref="validator"/>
     </bean>
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传文件的最大大小，单位为字节 -->
+        <property name="maxUploadSize" value="17367648787"></property>
+
+        <!-- 上传文件的编码 -->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
     <context:component-scan base-package="priv.mw.controller"/>
     <context:component-scan base-package="priv.mw.advice"/>
 
+    <mvc:resources mapping="/file/**" location="file:/d:/tidyCache/"/>
+
     <mvc:annotation-driven  validator="validator">
-        <!--        对应方法中注入userid-->
+        <!--        配置注解解析Resolver-->
         <mvc:argument-resolvers>
             <bean class="priv.mw.resolver.UserIdHandlerMethodArgumentResolver"/>
+            <bean class="priv.mw.resolver.SingleJSONParamHandlerMethodArgumentResolver"/>
         </mvc:argument-resolvers>
 <!--        输出数据放置乱码-->
         <mvc:message-converters>

@@ -2,6 +2,8 @@ package priv.mw.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Article {
     private Integer id;
@@ -10,4 +12,5 @@ public class Article {
     private String content;
     private Tag[] tags;
     private Groups groups;
+    private List<Assets> assets;
 }

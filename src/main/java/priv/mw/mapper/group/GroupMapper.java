@@ -5,4 +5,5 @@ import priv.mw.domain.Groups;
 public interface GroupMapper {
     public void addGroup(Groups groups);
     public Groups findGroupByName(String name);
+    public Groups findGroupById(int id);
 }

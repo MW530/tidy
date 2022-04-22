@@ -10,4 +10,7 @@
     <select id="findTagByName" parameterType="string" resultType="tag">
         SELECT id, name FROM tags WHERE name = #{name}
     </select>
+    <select id="findTagById" resultType="tag">
+        SELECT id, name FROM tags WHERE id = #{id}
+    </select>
 </mapper>

@@ -1,26 +1,26 @@
-package priv.mw.service.essay.impl;
+package priv.mw.service.article.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import priv.mw.domain.Article;
 import priv.mw.domain.Essay;
 import priv.mw.domain.Groups;
 import priv.mw.domain.Tag;
-import priv.mw.mapper.essay.EssayMapper;
+import priv.mw.mapper.article.ArticleMapper;
 import priv.mw.mapper.group.GroupMapper;
 import priv.mw.mapper.tag.TagMapper;
-import priv.mw.service.essay.EssayService;
+import priv.mw.service.article.ArticleService;
 
-@Service("essayService")
-public class EssayServiceImpl implements EssayService {
+@Service("articleService")
+public class ArticleServiceImpl implements ArticleService {
 
-    private EssayMapper essayMapper;
+    private ArticleMapper articleMapper;
     private TagMapper tagMapper;
     private GroupMapper groupMapper;
 
     @Autowired
-    public void setEssayMapper(EssayMapper essayMapper) {
-        this.essayMapper = essayMapper;
+    public void setArticleMapper(ArticleMapper articleMapper) {
+        this.articleMapper = articleMapper;
     }
 
     @Autowired
@@ -34,37 +34,35 @@ public class EssayServiceImpl implements EssayService {
     }
 
     @Override
-    @Transactional
-    public void addEssay(Essay essay) {
-        assembleEssay(essay);
-        essayMapper.addEssay(essay);
+    public void addArticle(Article article) {
+        assembleArticle(article);
+        articleMapper.addArticle(article);
     }
 
     @Override
-    public void delEssay(Integer id) {
-        essayMapper.delEssay(id);
-        // 如何设计策略，清理对应tag和group
+    public void delArticle(int id) {
+        articleMapper.delArticle(id);
     }
 
     @Override
-    public void updateEssay(Essay essay) {
-        assembleEssay(essay);
-        essayMapper.updateEssay(essay);
+    public void updateArticle(Article article) {
+        assembleArticle(article);
+        articleMapper.updateArticle(article);
     }
 
     @Override
-    public Essay findEssayById(Integer id) {
-        return essayMapper.findEssayById(id);
+    public Article findArticleById(int id) {
+        return articleMapper.getArticleById(id);
     }
 
     @Override
-    public Essay[] findEssays() {
-        return essayMapper.findAllEssays();
+    public Article[] findAllArticles() {
+        return articleMapper.findAllArticles();
     }
 
-    private void assembleEssay(Essay essay){
+    private void assembleArticle(Article article){
         // tags装配
-        Tag[] tags = essay.getTags();
+        Tag[] tags = article.getTags();
         for (int i = 0; i <tags.length; i++) {
             Tag newTag = tagMapper.findTagByName(tags[i].getName());
             if(newTag != null){
@@ -75,10 +73,10 @@ public class EssayServiceImpl implements EssayService {
         }
 
         // group装配
-        Groups group = essay.getGroups();
+        Groups group = article.getGroups();
         Groups newGroups = groupMapper.findGroupByName(group.getName());
         if(newGroups != null){
-            essay.setGroups(newGroups);
+            article.setGroups(newGroups);
         }else{
             groupMapper.addGroup(group);
         }

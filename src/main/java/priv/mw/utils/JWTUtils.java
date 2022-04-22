@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
+import org.springframework.beans.factory.annotation.Value;
 import priv.mw.exception.ClientException;
 import priv.mw.exception.TokenExpiredException;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 public class JWTUtils {
 
+//    @Value("#{JWTSecret}")
     private static String key = "nduiabfuba13432njkbhj2v31nkxja97893543FASDFASE";
     private static int aliveDay = 1;
 

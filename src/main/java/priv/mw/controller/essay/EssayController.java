@@ -1,15 +1,12 @@
 package priv.mw.controller.essay;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import priv.mw.annotation.UserId;
 import priv.mw.domain.Essay;
 import priv.mw.service.essay.EssayService;
 
-@RestController
+@RestController("EssayController")
 @RequestMapping("/essay")
 public class EssayController {
 
@@ -23,5 +20,25 @@ public class EssayController {
     @PostMapping("/addEssay")
     public void addEssay(@UserId Essay essay){
         essayService.addEssay(essay);
+    }
+
+    @GetMapping("/delEssay")
+    public void delEssay(Integer id){
+        essayService.delEssay(id);
+    }
+
+    @PostMapping("/updateEssay")
+    public void updateEssay(@UserId Essay essay){
+        essayService.updateEssay(essay);
+    }
+
+    @GetMapping("/getEssayById")
+    public Essay getEssayById(int id){
+        return essayService.findEssayById(id);
+    }
+
+    @GetMapping("/allEssay")
+    public Essay[] allEssay(){
+        return essayService.findEssays();
     }
 }

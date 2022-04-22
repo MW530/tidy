@@ -1,4 +1,4 @@
-package priv.mw.utils.mybatisTypeHandlers;
+package priv.mw.utils.mybatisTypeHandlers.scanHandler;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

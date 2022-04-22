@@ -4,11 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="priv.mw.mapper.group.GroupMapper">
+
     <insert id="addGroup" parameterType="string"  useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO postgroups(id, name) VALUES (null, #{name,typeHandler=priv.mw.utils.mybatisTypeHandlers.GroupDefaultHandler})
+        INSERT INTO postgroups(id, name) VALUES (null, #{name})
     </insert>
 
     <select id="findGroupByName" parameterType="string" resultType="groups">
-        SELECT id, name FROM postgroups WHERE name = #{name}
+        SELECT id, name, post FROM postgroups WHERE name = #{name}
+    </select>
+    <select id="findGroupById" resultType="groups">
+        SELECT id, name, post FROM postgroups WHERE id = #{id}
     </select>
 </mapper>

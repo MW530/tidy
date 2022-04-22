@@ -3,8 +3,60 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="priv.mw.mapper.essay.EssayMapper">
+
+    <resultMap id="EssayMap" type="essay" autoMapping="true">
+        <association property="groups" column="groupss" select="_findGroups" autoMapping="true"/>
+        <collection property="tags" column="tags" select="_findTag" autoMapping="true"/>
+        <collection property="assets" column="assets" select="_findAssets" autoMapping="true"/>
+    </resultMap>
+
+    <select id="_findTag" resultType="tag">
+        SELECT id, name FROM tags WHERE id IN
+        <foreach collection="_parameter.split(';')" separator="," open="(" close=")" item="itemId">
+            #{itemId}
+        </foreach>
+    </select>
+
+    <select id="_findGroups" resultType="groups">
+        SELECT id, name, post FROM postgroups WHERE id = #{value}
+    </select>
+
+    <select id="_findAssets" parameterType="assets" resultType="assets">
+        SELECT id, uid, uuid, name, types, createDate FROM assets WHERE id IN
+        <foreach collection="_parameter.split(';')" separator="," open="(" close=")" item="itemId">
+            #{itemId}
+        </foreach>
+    </select>
+
     <insert id="addEssay" parameterType="essay">
-        INSERT INTO essays(id, uid, name, content, tags, article, groupss)
-        VALUES (#{id}, #{uid}, #{name}, #{content}, #{tags}, #{articleId}, #{groups,typeHandler=priv.mw.utils.mybatisTypeHandlers.GroupIdHandler})
+        INSERT INTO essays(id, uid, name, content, tags, article, groupss, assets)
+        VALUES (#{id}, #{uid}, #{name}, #{content}, #{tags}, #{articleId},
+                #{groups,typeHandler=priv.mw.utils.mybatisTypeHandlers.unScanHandler.GroupIdHandler}, #{assets})
     </insert>
+
+    <update id="updateEssay" parameterType="essay">
+        UPDATE essays SET name = #{name}, content = #{content}, article = #{articleId},
+                          groupss = #{groups,typeHandler=priv.mw.utils.mybatisTypeHandlers.unScanHandler.GroupIdHandler}, assets = #{assets}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delEssay" parameterType="int">
+        DELETE FROM essays WHERE id = #{id}
+    </delete>
+
+    <select id="findAllEssays" resultType="essay" resultMap="EssayMap">
+        SELECT id, uid, name, content, article AS articleId, tags, groupss, assets FROM essays
+    </select>
+
+    <select id="getTagsByEssayId" resultType="string">
+        SELECT tags FROM essays WHERE id = #{id}
+    </select>
+
+    <select id="getGroupsByEssayId" resultType="int">
+        SELECT groupss from essays WHERE id = #{id}
+    </select>
+
+    <select id="findEssayById" parameterType="int" resultType="essay" resultMap="EssayMap">
+        SELECT id, uid, name, content, article AS articleId, tags, groupss, assets FROM essays WHERE id = #{id}
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package priv.mw.utils.mybatisTypeHandlers;
+package priv.mw.utils.mybatisTypeHandlers.unScanHandler;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -9,16 +9,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GroupIdHandler extends BaseTypeHandler<Groups> {
-
+public class GroupDefaultHandler extends BaseTypeHandler<Groups> {
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, Groups groups, JdbcType jdbcType) throws SQLException {
-        preparedStatement.setInt(i, groups.getId());
+        preparedStatement.setString(i, groups.getName());
     }
 
     @Override
     public Groups getNullableResult(ResultSet resultSet, String s) throws SQLException {
-        return resultSet.getObject(s, Groups.class);
+        Groups groups = new Groups();
+        groups.setId(resultSet.getInt("id"));
+        groups.setName(resultSet.getString("name"));
+        groups.setPost(resultSet.getInt("post"));
+        return groups;
     }
 
     @Override

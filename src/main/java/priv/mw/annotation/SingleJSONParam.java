@@ -6,8 +6,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 /**
- * @param value obj: 对象注入；base：基础类型注入
+ * @param value: 单个参数在JSON中的名字，无则会对应匹配
  */
-public @interface UserId {
-    String value() default "obj";
+public @interface SingleJSONParam {
+    String value() default "0";
 }

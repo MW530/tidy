@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.mw.mapper.user.PersonInfoMapper">
+
+    <update id="updateAvatar">
+        UPDATE users SET avatar = #{avatarId} WHERE id = #{uId}
+    </update>
+    <update id="updateShowName">
+        UPDATE users SET showName = #{showName} WHERE id = #{uId}
+    </update>
+    <update id="updateDescription">
+        UPDATE users SET description = #{description} WHERE id = #{uId}
+    </update>
+</mapper>

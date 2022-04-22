@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.mw.mapper.article.ArticleMapper">
+
+    <resultMap id="ArticleMap" type="article" autoMapping="true">
+        <association property="groups" column="groupss" autoMapping="true" select="_findGroups"/>
+        <collection property="tags" column="tags" autoMapping="true" select="_findTag"/>
+        <collection property="assets" column="assets" autoMapping="true" select="_findAssets"/>
+    </resultMap>
+
+    <select id="_findTag" resultType="tag">
+        SELECT id, name FROM tags WHERE id IN
+        <foreach collection="_parameter.split(';')" separator="," open="(" close=")" item="itemId">
+            #{itemId}
+        </foreach>
+    </select>
+
+    <select id="_findGroups" resultType="groups">
+        SELECT id, name, post FROM postgroups WHERE id = #{value}
+    </select>
+
+    <select id="_findAssets" parameterType="assets" resultType="assets">
+        SELECT id, uid, uuid, name, types, createDate FROM assets WHERE id IN
+        <foreach collection="_parameter.split(';')" separator="," open="(" close=")" item="itemId">
+            #{itemId}
+        </foreach>
+    </select>
+
+    <insert id="addArticle">
+        INSERT INTO articles(id, uid, name, content, tags, groupss, assets)
+        VALUES (#{id}, #{uid}, #{name}, #{content}, #{tags} , #{groups,typeHandler=priv.mw.utils.mybatisTypeHandlers.unScanHandler.GroupIdHandler}, #{assets})
+    </insert>
+    <update id="updateArticle">
+        UPDATE articles SET name = #{name}, content = #{content}, tags = #{tags},
+                            groupss = #{groups,typeHandler=priv.mw.utils.mybatisTypeHandlers.unScanHandler.GroupIdHandler}, assets=#{assets}
+        WHERE id = #{id}
+    </update>
+    <delete id="delArticle">
+        DELETE FROM articles WHERE id = #{id}
+    </delete>
+    <select id="getArticleById" resultType="priv.mw.domain.Article" resultMap="ArticleMap">
+        SELECT id, uid, name, content, tags, groupss, assets FROM articles WHERE id = #{id}
+    </select>
+    <select id="findAllArticles" resultMap="ArticleMap">
+        SELECT id, uid, name, content, tags, groupss, assets FROM articles
+    </select>
+</mapper>

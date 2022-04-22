@@ -8,6 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import priv.mw.annotation.UserId;
 import priv.mw.domain.Essay;
+import priv.mw.domain.User;
 import priv.mw.exception.ServerException;
 import priv.mw.exception.TokenExpiredException;
 import priv.mw.utils.JWTUtils;
@@ -26,10 +27,7 @@ public class UserIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        if (parameter.hasParameterAnnotation(UserId.class)) {
-            return true;
-        }
-        return false;
+        return  parameter.hasParameterAnnotation(UserId.class) ? true : false;
     }
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
@@ -39,9 +37,9 @@ public class UserIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
             throw  new TokenExpiredException("token过期！");
         }
         // 直接简单参数int-userId
-        if(parameter.getParameterAnnotation(UserId.class).value() == "base"){
-            if(parameter.getParameterType() != Integer.class){
-                throw new RuntimeException("UserId注解base模式下，参数必须为Integer类型");
+        if(parameter.getParameterAnnotation(UserId.class).value().equals("base")){
+            if(parameter.getParameterType() != Integer.class && parameter.getParameterType() != int.class ){
+                throw new RuntimeException("UserId注解base模式下，参数必须为Integer或者int类型");
             }
             return id;
         }else{  //对象的属性自动赋值
@@ -55,7 +53,6 @@ public class UserIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
                 writeMethod.invoke(o, id);
                 return o;
             }
-            Essay essay = new Essay();
             throw new ServerException("UserId注解obj模式下，参数对象必须含有uid/id字段");
         }
     }
